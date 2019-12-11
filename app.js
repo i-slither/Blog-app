@@ -79,22 +79,50 @@ app.route("/posts/:postID")
     }
 
   });
-})
-
-.delete(function(req, res) {
-  const requestedPostID = req.params.postID;
-  Post.findByIdAndDelete({_id: requestedPostID},
-    function(err) {
-      if (err) {
-        console.log(err);
-      } else {
-        res.redirect("/");
-      }
-    }
-  );
 });
 
+app.route("/delete/:postId")
 
+.get (function(req, res) {
+  const requestedPostId = req.params.postId;
+    Post.findByIdAndDelete({_id: requestedPostId},
+      function(err) {
+        if (err) {
+          console.log(err);
+        } else {
+          res.redirect("/");
+        }
+      }
+    );
+});
+
+app.route("/posts/edit/:postId")
+
+.get(function(req, res) {
+  const requestedPostId = req.params.postId;
+  Post.findById(requestedPostId, function(err, foundDoc) {
+    if (!err) {
+      res.render("edit", {
+        post: foundDoc
+      });
+    } else {
+      res.send(err);
+    }
+  });
+})
+
+.post(function(req, res){
+  let post = {};
+    post.title= req.body.postTitle;
+    post.content= req.body.postBody;
+
+Post.update({_id: req.params.postId}, post, function(err) {
+  if(!err) {
+    res.redirect("/");
+  }
+});
+
+});
 
 app.listen(3000, function() {
   console.log("Server started on port 3000");

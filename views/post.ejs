@@ -2,8 +2,11 @@
 
   <h1><%=post.title%></h1>
   <p><%=post.content%></p>
-  <form class="" action="/posts/<%= post.id %>_method=DELETE">
-  <button type="submit" name="delButton" value="<%= post.id %>">Delete</button>
+  <form class="" action="/delete/<%= post._id %>" >
+  <button type="submit" name="delButton">Delete</button>
+  </form>
+  <form class="" action="/posts/edit/<%= post._id %>" >
+    <button type="submit" name="button">Edit</button>
   </form>
 
 <%- include("partials/footer"); -%>
